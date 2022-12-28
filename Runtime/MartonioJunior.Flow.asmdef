@@ -1,10 +1,10 @@
 {
-    "name": "[CompanyName].[PackageName].Editor",
+    "name": "MartonioJunior.Flow",
     "rootNamespace": "",
-    "references": [],
-    "includePlatforms": [
-        "Editor"
+    "references": [
+        "GUID:8ec905c8e3a9843b4ba8df90c092fe2d"
     ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

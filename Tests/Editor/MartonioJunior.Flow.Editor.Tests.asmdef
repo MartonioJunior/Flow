@@ -1,12 +1,14 @@
 {
-    "name": "[CompanyName].[PackageName].Tests",
+    "name": "MartonioJunior.Flow.Editor.Tests",
     "rootNamespace": "",
     "references": [
-        "[CompanyName].[PackageName]",
+        "MartonioJunior.Flow.Editor",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
