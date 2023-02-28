@@ -22,6 +22,11 @@ namespace MartonioJunior.Flow
         #region ITicker Implementation
         public float DeltaTime {get; private set;}
 
+        public void Reset()
+        {
+            lastMarker = timestampSource();
+        }
+
         public void Tick()
         {
             var currentMarker = timestampSource();

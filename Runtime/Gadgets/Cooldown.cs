@@ -27,7 +27,7 @@ namespace MartonioJunior.Flow
             cooldownTimer = Timer.Once(cooldown, isRealTime, onComplete: OnCompleteTimer);
         }
 
-        public Cooldown(float cooldown, AdvancedTicker ticker, bool isRealTime = false)
+        public Cooldown(float cooldown, ITicker ticker)
         {
             cooldownTimer = new Timer(ticker, cooldown);
             cooldownTimer.OnComplete += OnCompleteTimer;

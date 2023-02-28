@@ -10,7 +10,7 @@ namespace MartonioJunior.Flow
         int numberOfLoops;
         float targetDuration;
         float tickScale = 1;
-        AdvancedTicker timerTicker;
+        ITicker ticker;
         #endregion
         #region Delegates
         public delegate void Event(Timer timer);
@@ -21,15 +21,15 @@ namespace MartonioJunior.Flow
         #region Constructors
         public Timer(float targetDuration, bool isRealTime, int numberOfLoops = 0)
         {
-            this.timerTicker = AdvancedTicker.New(isRealTime);
+            this.ticker = AdvancedTicker.New(isRealTime);
             this.numberOfLoops = numberOfLoops;
             this.duration = 0;
             this.targetDuration = targetDuration;
         }
 
-        public Timer(AdvancedTicker ticker, float targetDuration, int numberOfLoops = 1)
+        public Timer(ITicker ticker, float targetDuration, int numberOfLoops = 1)
         {
-            this.timerTicker = ticker;
+            this.ticker = ticker;
             this.numberOfLoops = numberOfLoops;
             this.duration = 0;
             this.targetDuration = targetDuration;
@@ -58,7 +58,7 @@ namespace MartonioJunior.Flow
         {
             if (!Paused) return;
 
-            timerTicker.UpdateTimeMarkers();
+            ticker.UpdateTimeMarkers();
 
             Paused = false;
 
@@ -81,9 +81,9 @@ namespace MartonioJunior.Flow
         {
             if (Paused) return;
 
-            timerTicker.Tick();
+            ticker.Tick();
 
-            duration += timerTicker.DeltaTime * tickScale;
+            duration += ticker.DeltaTime * tickScale;
 
             CheckTimer();
 
@@ -121,7 +121,7 @@ namespace MartonioJunior.Flow
         private void RemapTimer()
         {
             duration -= targetDuration;
-            timerTicker.Reset();
+            ticker.Reset();
         }
 
         public void Restart()

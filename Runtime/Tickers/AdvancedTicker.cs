@@ -37,12 +37,13 @@ namespace MartonioJunior.Flow
         {
             lastMarker = timestampSource();
         }
-        #endregion
-        #region Methods
+        
         public void Reset()
         {
             zeroMarker = lastMarker = timestampSource();
         }
+        #endregion
+        #region Methods
         #endregion
         #region Static Methods
         public static AdvancedTicker New(bool isRealTime)

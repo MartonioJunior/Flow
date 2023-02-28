@@ -8,6 +8,7 @@ namespace MartonioJunior.Flow
         float DeltaTime {get;}
         #endregion
         #region Methods
+        void Reset();
         void UpdateTimeMarkers();
         #endregion
     }
