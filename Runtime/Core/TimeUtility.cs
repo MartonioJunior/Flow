@@ -7,20 +7,12 @@ namespace MartonioJunior.Flow
         #region Static Methods
         public static float GetDeltaTime(bool affectedByTimescale = true)
         {
-            if (affectedByTimescale) {
-                return Time.deltaTime;
-            } else {
-                return Time.unscaledDeltaTime;
-            }
+            return affectedByTimescale ? Time.deltaTime : Time.unscaledDeltaTime;
         }
 
         public static float GetFixedDeltaTime(bool affectedByTimescale = true)
         {
-            if (affectedByTimescale) {
-                return Time.fixedDeltaTime;
-            } else {
-                return Time.fixedUnscaledDeltaTime;
-            }
+            return affectedByTimescale ? Time.fixedDeltaTime : Time.fixedUnscaledDeltaTime;
         }
 
         public static float GetGlobalTime(bool affectedByTimescale = true, bool useSystemTime = false)
@@ -34,7 +26,7 @@ namespace MartonioJunior.Flow
             }
         }
 
-        public static double GetTimeAsDouble(bool affectedByTimescale = true, bool useSystemTime = false)
+        public static double GetGlobalTimeDouble(bool affectedByTimescale = true, bool useSystemTime = false)
         {
             if (useSystemTime) {
                 return Time.realtimeSinceStartupAsDouble;
