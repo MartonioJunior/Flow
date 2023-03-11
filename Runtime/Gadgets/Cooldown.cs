@@ -33,7 +33,7 @@ namespace MartonioJunior.Flow
             cooldownTimer.OnComplete += OnCompleteTimer;
         }
         #endregion
-        #region ITicker Implementation
+        #region ITimeManageable Implementation
         public void Pause()
         {
             cooldownTimer.Pause();
