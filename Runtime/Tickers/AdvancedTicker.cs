@@ -16,11 +16,9 @@ namespace MartonioJunior.Flow
         #region Constructors
         public AdvancedTicker(Func<float> timestampSource)
         {
-            if (timestampSource == null) throw new System.ArgumentNullException();
-
-            this.timestampSource = timestampSource;
-            this.lastMarker = this.zeroMarker = timestampSource();
-            this.DeltaTime = 0;
+            this.timestampSource = timestampSource ?? throw new System.ArgumentNullException();
+            lastMarker = zeroMarker = timestampSource();
+            DeltaTime = 0;
         }
         #endregion
         #region ITicker Implementation
@@ -37,23 +35,14 @@ namespace MartonioJunior.Flow
         {
             lastMarker = timestampSource();
         }
-        
+
         public void Reset()
         {
             zeroMarker = lastMarker = timestampSource();
         }
         #endregion
-        #region Methods
-        #endregion
         #region Static Methods
-        public static AdvancedTicker New(bool isRealTime)
-        {
-            if (isRealTime) {
-                return new AdvancedTicker(Ticker.Unscaled);
-            } else {
-                return new AdvancedTicker(Ticker.Scaled);
-            }
-        }
+        public static AdvancedTicker New(bool isRealTime) => isRealTime ? new AdvancedTicker(Ticker.Unscaled) : new AdvancedTicker(Ticker.Scaled);
         #endregion
     }
 }

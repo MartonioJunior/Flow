@@ -1,4 +1,5 @@
 using System;
+using MartonioJunior.Core;
 using UnityEngine;
 
 namespace MartonioJunior.Flow
@@ -21,17 +22,17 @@ namespace MartonioJunior.Flow
         #region Constructors
         public Timer(float targetDuration, bool isRealTime, int numberOfLoops = 0)
         {
-            this.ticker = AdvancedTicker.New(isRealTime);
+            ticker = AdvancedTicker.New(isRealTime);
+            duration = 0;
             this.numberOfLoops = numberOfLoops;
-            this.duration = 0;
             this.targetDuration = targetDuration;
         }
 
         public Timer(ITicker ticker, float targetDuration, int numberOfLoops = 1)
         {
+            duration = 0;
             this.ticker = ticker;
             this.numberOfLoops = numberOfLoops;
-            this.duration = 0;
             this.targetDuration = targetDuration;
         }
         #endregion
@@ -43,7 +44,7 @@ namespace MartonioJunior.Flow
         public float RemainingNormal => Remaining / targetDuration;
         public bool Paused {get; private set;}
         public float Target => targetDuration;
-        public bool Zeroed => duration == 0;
+        public bool Zeroed => duration.IsZero();
 
         public void Pause()
         {
@@ -99,7 +100,7 @@ namespace MartonioJunior.Flow
         private void CheckTimer()
         {
             if (duration < targetDuration) return;
-            
+
             if (numberOfLoops == -1) {
                 RemapTimer();
             } else if (numberOfLoops > 0) {
@@ -131,28 +132,19 @@ namespace MartonioJunior.Flow
         }
         #endregion
         #region Static Methods
-        public static Timer Every(float time, bool isRealTime, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false)
-        {
-            return New(time, isRealTime, -1, onComplete, onUpdate, onChangeState, autoplay);
-        }
-
-        public static Timer ForXLoops(float time, bool isRealTime, int numberOfLoops, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false)
-        {
-            return New(time, isRealTime, numberOfLoops, onComplete, onUpdate, onChangeState, autoplay);
-        }
-
-        public static Timer Once(float time, bool isRealTime, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false)
-        {
-            return New(time, isRealTime, 0, onComplete, onUpdate, onChangeState, autoplay);
-        }
+        public static Timer Every(float time, bool isRealTime, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false) => New(time, isRealTime, -1, onComplete, onUpdate, onChangeState, autoplay);
+        public static Timer ForXLoops(float time, bool isRealTime, int numberOfLoops, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false) => New(time, isRealTime, numberOfLoops, onComplete, onUpdate, onChangeState, autoplay);
+        public static Timer Once(float time, bool isRealTime, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false) => New(time, isRealTime, 0, onComplete, onUpdate, onChangeState, autoplay);
 
         public static Timer New(float time, bool isRealTime, int numberOfLoops = 0, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false)
         {
-            var cronometer = new Timer(time, isRealTime);
+            Timer cronometer = new(time, isRealTime) {
+                numberOfLoops = numberOfLoops
+            };
 
-            if (onComplete != null) cronometer.OnComplete += onComplete;
-            if (onUpdate != null) cronometer.OnUpdate += onUpdate;
-            if (onChangeState != null) cronometer.OnChangeState += onChangeState;
+            if (onComplete is not null) cronometer.OnComplete += onComplete;
+            if (onUpdate is not null) cronometer.OnUpdate += onUpdate;
+            if (onChangeState is not null) cronometer.OnChangeState += onChangeState;
             if (autoplay) cronometer.Resume();
 
             return cronometer;

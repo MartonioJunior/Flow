@@ -12,11 +12,9 @@ namespace MartonioJunior.Flow
         #region Constructors
         public Ticker(Func<float> timestampSource)
         {
-            if (timestampSource == null) throw new System.ArgumentNullException();
-
-            this.timestampSource = timestampSource;
-            this.lastMarker = timestampSource();
-            this.DeltaTime = 0;
+            this.timestampSource = timestampSource ?? throw new System.ArgumentNullException();
+            lastMarker = timestampSource();
+            DeltaTime = 0;
         }
         #endregion
         #region ITicker Implementation

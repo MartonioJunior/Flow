@@ -6,7 +6,7 @@ namespace MartonioJunior.Flow
     {
         #region ITicker Implementation
         public float DeltaTime {get; set;}
-        
+
         public void Reset() {}
         public void Tick() {}
         public void UpdateTimeMarkers() {}

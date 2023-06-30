@@ -92,8 +92,8 @@ namespace MartonioJunior.Flow
         {
             var cooldown = new Cooldown(cooldownTime, isRealTime);
 
-            if (onTrigger != null) cooldown.OnTrigger += onTrigger;
-            if (onAvailable != null) cooldown.OnAvailable += onAvailable;
+            if (onTrigger is not null) cooldown.OnTrigger += onTrigger;
+            if (onAvailable is not null) cooldown.OnAvailable += onAvailable;
             if (autoplay) cooldown.Resume();
 
             return cooldown;

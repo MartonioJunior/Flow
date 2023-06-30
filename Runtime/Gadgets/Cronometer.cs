@@ -7,8 +7,11 @@ namespace MartonioJunior.Flow
     {
         #region Variables
         ITicker cronometerTicker;
-        float duration = 0;
+        float duration;
         float tickScale = 1;
+        #endregion
+        #region Properties
+        public float TimeScale => tickScale;
         #endregion
         #region Delegates
         public delegate void Event(Cronometer cronometer);
@@ -32,7 +35,7 @@ namespace MartonioJunior.Flow
         #region ICronometer Implementation
         public float Elapsed => duration;
         public bool Paused {get; private set;}
-        public bool Zeroed => duration == 0;
+        public bool Zeroed => duration < float.Epsilon;
 
         public void Pause()
         {
@@ -82,8 +85,8 @@ namespace MartonioJunior.Flow
         {
             var cronometer = new Cronometer(isRealTime);
 
-            if (onUpdate != null) cronometer.OnUpdate += onUpdate;
-            if (onChangeState != null) cronometer.OnChangeState += onChangeState;
+            if (onUpdate is not null) cronometer.OnUpdate += onUpdate;
+            if (onChangeState is not null) cronometer.OnChangeState += onChangeState;
             if (autoplay) cronometer.Resume();
 
             return cronometer;
