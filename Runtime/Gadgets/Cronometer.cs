@@ -65,6 +65,7 @@ namespace MartonioJunior.Flow
         public void Stop()
         {
             duration = 0;
+            Paused = true;
 
             OnChangeState?.Invoke(this);
         }

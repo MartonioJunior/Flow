@@ -7,7 +7,7 @@ namespace MartonioJunior.Flow
     public class Timer: ITimer
     {
         #region Variables
-        float duration = 0;
+        float duration;
         int numberOfLoops;
         float targetDuration;
         float tickScale = 1;
@@ -74,6 +74,7 @@ namespace MartonioJunior.Flow
         public void Stop()
         {
             duration = 0;
+            Paused = true;
 
             OnChangeState?.Invoke(this);
         }
