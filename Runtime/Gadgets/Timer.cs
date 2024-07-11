@@ -123,6 +123,7 @@ namespace MartonioJunior.Flow
         private void RemapTimer()
         {
             duration -= targetDuration;
+            OnComplete?.Invoke(this);
             ticker.Reset();
         }
 
