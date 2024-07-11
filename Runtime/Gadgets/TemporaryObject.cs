@@ -20,7 +20,7 @@ namespace MartonioJunior.Flow
         void Update() => timer.Tick();
         #endregion
         #region Methods
-        private void Destroy(Timer timer) => gameObject.Destroy();
+        private void Destroy(Timer timer) => gameObject.DestroyAndUnparent();
         #endregion
     }
 }
