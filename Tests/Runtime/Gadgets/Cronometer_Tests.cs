@@ -84,7 +84,7 @@ namespace Tests.MartonioJunior.Flow
         [TestCaseSource(nameof(Stop_UseCases))]
         public void Stop_ReturnsCronometerBackToZero()
         {
-            Assert.Ignore(NotImplemented);
+            Assert.Ignore("Not Implemented");
         }
 
         public static IEnumerable Tick_UseCases()
@@ -94,7 +94,7 @@ namespace Tests.MartonioJunior.Flow
         [TestCaseSource(nameof(Tick_UseCases))]
         public void Tick_UpdatesCronometer()
         {
-            Assert.Ignore(NotImplemented);
+            Assert.Ignore("Not Implemented");
         }
         public static IEnumerable New_UseCases()
         {
@@ -103,7 +103,7 @@ namespace Tests.MartonioJunior.Flow
         [TestCaseSource(nameof(New_UseCases))]
         public void New_CreatesNewCronometer()
         {
-            Assert.Ignore(NotImplemented);
+            Assert.Ignore("Not Implemented");
         }
         #endregion
     }
