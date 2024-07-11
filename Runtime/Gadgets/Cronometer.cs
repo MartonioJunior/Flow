@@ -1,6 +1,3 @@
-using System;
-using UnityEngine;
-
 namespace MartonioJunior.Flow
 {
     public class Cronometer: ICronometer
@@ -82,7 +79,7 @@ namespace MartonioJunior.Flow
         }
         #endregion
         #region Static Methods
-        public static Cronometer New(bool isRealTime, Cronometer.Event onUpdate = null, Cronometer.Event onChangeState = null, bool autoplay = true)
+        public static Cronometer New(bool isRealTime, Event onUpdate = null, Event onChangeState = null, bool autoplay = true)
         {
             var cronometer = new Cronometer(isRealTime);
 

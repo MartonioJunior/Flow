@@ -7,14 +7,15 @@ namespace MartonioJunior.Flow
     */
     public interface ITimeScalable: ITime
     {
-        #region Methods
+        // MARK: Methods
         /**
         <summary>Defines a time scale for the temporal object.</summary>
         <param name="timeScale">The time scale to be set.</param>
         */
         void SetTimeScale(float timeScale);
-        #endregion
     }
+
+    #region Extensions
     /**
     <summary>Defines extension for the ITimeScalable class.</summary>
     */
@@ -41,4 +42,5 @@ namespace MartonioJunior.Flow
             self.SetTimeScale(-Mathf.Abs(multiplier));
         }
     }
+    #endregion
 }

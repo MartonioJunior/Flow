@@ -112,7 +112,7 @@ namespace MartonioJunior.Flow
             }
         }
 
-        public void MarkAsDone(bool fireEvent=true)
+        public void MarkAsDone(bool fireEvent = true)
         {
             duration = targetDuration;
             Paused = true;
