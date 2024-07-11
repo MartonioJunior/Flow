@@ -22,4 +22,15 @@ namespace MartonioJunior.Flow
         void Stop();
         #endregion
     }
+
+    #region Default Implementation
+    public static partial class ITimeManageableExtensions
+    {
+        public static void Restart(this ITimeManageable self)
+        {
+            self.Stop();
+            self.Resume();
+        }
+    }
+    #endregion
 }
