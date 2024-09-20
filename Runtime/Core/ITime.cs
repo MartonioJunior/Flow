@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace MartonioJunior.Flow
 {
     /**
@@ -7,11 +5,10 @@ namespace MartonioJunior.Flow
     */
     public interface ITime
     {
-        #region Methods
+        // MARK: Methods
         /**
         <summary>Notifies that the state of the game has updated.</summary>
         */
         void Tick();
-        #endregion
     }
 }

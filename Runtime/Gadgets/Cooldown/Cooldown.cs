@@ -1,27 +1,25 @@
-using UnityEngine;
-
 namespace MartonioJunior.Flow
 {
     /**
     <summary>A special timer used to represent cooldown timers.</summary>
     */
-    public class Cooldown: ITimeManageable
+    public partial class Cooldown
     {
-        #region Variables
+        // MARK: Variables
         Timer cooldownTimer;
-        #endregion
-        #region Properties
+        
+        // MARK: Properties
         public bool HasEnded => cooldownTimer.Done;
         public float Remaining => cooldownTimer.Remaining;
         public float Time => cooldownTimer.Target;
-        #endregion
-        #region Delegates
+        
+        // MARK: Delegates
         public delegate void Event(Cooldown cooldown);
-        #endregion
-        #region Events
+        
+        // MARK: Events
         public event Event OnTrigger, OnAvailable;
-        #endregion
-        #region Constructors
+        
+        // MARK: Initializers
         public Cooldown(float cooldown, bool isRealTime = false)
         {
             cooldownTimer = Timer.Once(cooldown, isRealTime, onComplete: OnCompleteTimer);
@@ -32,34 +30,8 @@ namespace MartonioJunior.Flow
             cooldownTimer = new Timer(ticker, cooldown);
             cooldownTimer.OnComplete += OnCompleteTimer;
         }
-        #endregion
-        #region ITimeManageable Implementation
-        public void Pause()
-        {
-            cooldownTimer.Pause();
-        }
-
-        public void Resume()
-        {
-            cooldownTimer.Resume();
-        }
-
-        public void Stop()
-        {
-            cooldownTimer.Stop();
-        }
-
-        public void SetTimeScale(float timeScale)
-        {
-            cooldownTimer.SetTimeScale(timeScale);
-        }
-
-        public void Tick()
-        {
-            cooldownTimer.Tick();
-        }
-        #endregion
-        #region Methods
+        
+        // MARK: Methods
         private void OnCompleteTimer(Timer timer)
         {
             OnAvailable?.Invoke(this);
@@ -84,10 +56,22 @@ namespace MartonioJunior.Flow
             cooldownTimer.Restart();
             OnTrigger?.Invoke(this);
         }
-        #endregion
-        #region Operators
-        #endregion
-        #region Static Methods
+    }
+
+    #region ITimeManageable Implementation
+    public partial class Cooldown: ITimeManageable
+    {
+        public void Pause() => cooldownTimer.Pause();
+        public void Resume() => cooldownTimer.Resume();
+        public void Stop() => cooldownTimer.Stop();
+        public void SetTimeScale(float timeScale) => cooldownTimer.SetTimeScale(timeScale);
+        public void Tick() => cooldownTimer.Tick();
+    }
+    #endregion
+
+    #region Factory
+    public partial class Cooldown
+    {
         public static Cooldown New(float cooldownTime, bool isRealTime, Cooldown.Event onTrigger = null, Cooldown.Event onAvailable = null, bool autoplay = true)
         {
             var cooldown = new Cooldown(cooldownTime, isRealTime);
@@ -98,6 +82,6 @@ namespace MartonioJunior.Flow
 
             return cooldown;
         }
-        #endregion
     }
+    #endregion
 }

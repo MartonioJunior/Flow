@@ -3,14 +3,20 @@ using MartonioJunior.Core;
 
 namespace MartonioJunior.Flow
 {
-    [DisallowMultipleComponent]
-    public class TemporaryObject: MonoBehaviour
+    public partial class TemporaryObject
     {
-        #region Variables
+        // MARK: Variables
         [SerializeField, Min(0f)] float timeToLive;
         Timer timer;
-        #endregion
-        #region MonoBehaviour Lifecycle
+
+        // MARK: Methods
+        private void Destroy(Timer timer) => gameObject.DestroyAndUnparent();
+    }
+
+    #region MonoBehaviour Implementation
+    [DisallowMultipleComponent]
+    public partial class TemporaryObject: MonoBehaviour
+    {
         void Awake()
         {
             timer = Timer.Once(timeToLive, false, onComplete: Destroy);
@@ -18,9 +24,6 @@ namespace MartonioJunior.Flow
         }
 
         void Update() => timer.Tick();
-        #endregion
-        #region Methods
-        private void Destroy(Timer timer) => gameObject.DestroyAndUnparent();
-        #endregion
     }
+    #endregion
 }

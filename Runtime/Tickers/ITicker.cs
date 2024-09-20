@@ -1,15 +1,12 @@
-using UnityEngine;
-
 namespace MartonioJunior.Flow
 {
     public interface ITicker: ITime
     {
-        #region Properties
+        // MARK: Properties
         float DeltaTime {get;}
-        #endregion
-        #region Methods
+        
+        // MARK: Methods
         void Reset();
         void UpdateTimeMarkers();
-        #endregion
     }
 }

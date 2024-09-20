@@ -1,25 +1,23 @@
-using System;
 using MartonioJunior.Core;
-using UnityEngine;
 
 namespace MartonioJunior.Flow
 {
-    public class Timer: ITimer
+    public partial class Timer
     {
-        #region Variables
+        // MARK: Variables
         float duration;
         int numberOfLoops;
         float targetDuration;
         float tickScale = 1;
         ITicker ticker;
-        #endregion
-        #region Delegates
+        
+        // MARK: Delegates
         public delegate void Event(Timer timer);
-        #endregion
-        #region Events
+        
+        // MARK: Events
         public event Event OnChangeState, OnComplete, OnUpdate;
-        #endregion
-        #region Constructors
+        
+        // MARK: Initializers
         public Timer(float targetDuration, bool isRealTime, int numberOfLoops = 0)
         {
             ticker = AdvancedTicker.New(isRealTime);
@@ -28,21 +26,65 @@ namespace MartonioJunior.Flow
             this.targetDuration = targetDuration;
         }
 
-        public Timer(ITicker ticker, float targetDuration, int numberOfLoops = 1)
+        public Timer(ITicker ticker, float targetDuration, int numberOfLoops = 0)
         {
             duration = 0;
             this.ticker = ticker;
             this.numberOfLoops = numberOfLoops;
             this.targetDuration = targetDuration;
         }
-        #endregion
-        #region ITimer Implementation
+        
+        // MARK: Methods
+        public void ChangeTargetTime(float targetTime)
+        {
+            targetDuration = targetTime;
+        }
+
+        private void CheckTimer()
+        {
+            if (duration < targetDuration) return;
+
+            if (numberOfLoops == -1) {
+                RemapTimer();
+            } else if (numberOfLoops > 0) {
+                RemapTimer();
+                numberOfLoops--;
+            } else {
+                MarkAsDone();
+            }
+        }
+
+        public void MarkAsDone(bool fireEvent = true)
+        {
+            duration = targetDuration;
+            Paused = true;
+
+            if (fireEvent) OnComplete?.Invoke(this);
+        }
+
+        private void RemapTimer()
+        {
+            duration -= targetDuration;
+            OnComplete?.Invoke(this);
+            ticker.Reset();
+        }
+
+        public void Restart()
+        {
+            duration = 0;
+            Resume();
+        }
+    }
+
+    #region ITimer Implementation
+    public partial class Timer: ITimer
+    {
         public bool Done => duration >= targetDuration;
         public float Elapsed => duration;
         public float ElapsedNormal => Elapsed / targetDuration;
         public float Remaining => targetDuration - duration;
         public float RemainingNormal => Remaining / targetDuration;
-        public bool Paused {get; private set;}
+        public bool Paused {get; private set;} = true;
         public float Target => targetDuration;
         public bool Zeroed => duration.IsZero();
 
@@ -91,53 +133,15 @@ namespace MartonioJunior.Flow
 
             OnUpdate?.Invoke(this);
         }
-        #endregion
-        #region Methods
-        public void ChangeTargetTime(float targetTime)
-        {
-            targetDuration = targetTime;
-        }
+    }
+    #endregion
 
-        private void CheckTimer()
-        {
-            if (duration < targetDuration) return;
-
-            if (numberOfLoops == -1) {
-                RemapTimer();
-            } else if (numberOfLoops > 0) {
-                RemapTimer();
-                numberOfLoops--;
-            } else {
-                MarkAsDone();
-            }
-        }
-
-        public void MarkAsDone(bool fireEvent = true)
-        {
-            duration = targetDuration;
-            Paused = true;
-
-            if (fireEvent) OnComplete?.Invoke(this);
-        }
-
-        private void RemapTimer()
-        {
-            duration -= targetDuration;
-            OnComplete?.Invoke(this);
-            ticker.Reset();
-        }
-
-        public void Restart()
-        {
-            duration = 0;
-            Resume();
-        }
-        #endregion
-        #region Static Methods
+    #region Factory
+    public partial class Timer
+    {
         public static Timer Every(float time, bool isRealTime, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false) => New(time, isRealTime, -1, onComplete, onUpdate, onChangeState, autoplay);
         public static Timer ForXLoops(float time, bool isRealTime, int numberOfLoops, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false) => New(time, isRealTime, numberOfLoops, onComplete, onUpdate, onChangeState, autoplay);
         public static Timer Once(float time, bool isRealTime, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false) => New(time, isRealTime, 0, onComplete, onUpdate, onChangeState, autoplay);
-
         public static Timer New(float time, bool isRealTime, int numberOfLoops = 0, Timer.Event onComplete = null, Timer.Event onUpdate = null, Timer.Event onChangeState = null, bool autoplay = false)
         {
             Timer cronometer = new(time, isRealTime) {
@@ -151,6 +155,6 @@ namespace MartonioJunior.Flow
 
             return cronometer;
         }
-        #endregion
     }
+    #endregion
 }

@@ -1,22 +1,22 @@
 namespace MartonioJunior.Flow
 {
-    public class Cronometer: ICronometer
+    public partial class Cronometer
     {
-        #region Variables
+        // MARK: Variables
         ITicker cronometerTicker;
         float duration;
         float tickScale = 1;
-        #endregion
-        #region Properties
+        
+        // MARK: Properties
         public float TimeScale => tickScale;
-        #endregion
-        #region Delegates
+
+        // MARK: Delegates
         public delegate void Event(Cronometer cronometer);
-        #endregion
-        #region Events
+       
+        // MARK: Events
         public event Event OnChangeState, OnUpdate;
-        #endregion
-        #region Constructors
+        
+        // MARK: Initializers
         public Cronometer(bool isRealTime)
         {
             cronometerTicker = Ticker.New(isRealTime);
@@ -28,8 +28,11 @@ namespace MartonioJunior.Flow
             cronometerTicker = ticker;
             cronometerTicker.UpdateTimeMarkers();
         }
-        #endregion
-        #region ICronometer Implementation
+    }
+
+    #region ICronometer Implementation
+    public partial class Cronometer: ICronometer
+    {
         public float Elapsed => duration;
         public bool Paused {get; private set;}
         public bool Zeroed => duration < float.Epsilon;
@@ -77,11 +80,15 @@ namespace MartonioJunior.Flow
 
             OnUpdate?.Invoke(this);
         }
-        #endregion
-        #region Static Methods
+    }
+    #endregion
+
+    #region Factory
+    public partial class Cronometer
+    {
         public static Cronometer New(bool isRealTime, Event onUpdate = null, Event onChangeState = null, bool autoplay = true)
         {
-            var cronometer = new Cronometer(isRealTime);
+            var cronometer = new Cronometer(Ticker.New(isRealTime));
 
             if (onUpdate is not null) cronometer.OnUpdate += onUpdate;
             if (onChangeState is not null) cronometer.OnChangeState += onChangeState;
@@ -89,6 +96,6 @@ namespace MartonioJunior.Flow
 
             return cronometer;
         }
-        #endregion
     }
+    #endregion
 }

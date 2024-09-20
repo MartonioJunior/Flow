@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace MartonioJunior.Flow
 {
     /**
@@ -7,7 +5,7 @@ namespace MartonioJunior.Flow
     */
     public interface ITimeManageable: ITime
     {
-        #region Methods
+        // MARK: Methods
         /**
         <summary>Pauses updates in certain states of the object.</summary>
         */
@@ -20,7 +18,6 @@ namespace MartonioJunior.Flow
         <summary>Resets certain states of the object.</summary>
         */
         void Stop();
-        #endregion
     }
 
     #region Default Implementation

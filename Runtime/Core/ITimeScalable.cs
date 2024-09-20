@@ -15,7 +15,7 @@ namespace MartonioJunior.Flow
         void SetTimeScale(float timeScale);
     }
 
-    #region Extensions
+    #region Default Implementation
     /**
     <summary>Defines extension for the ITimeScalable class.</summary>
     */

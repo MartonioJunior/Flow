@@ -3,26 +3,29 @@ using UnityEngine;
 
 namespace MartonioJunior.Flow
 {
-    public struct AdvancedTicker: ITicker
+    public partial struct AdvancedTicker
     {
-        #region Variables
+        // MARK: Variables
         float zeroMarker;
         float lastMarker;
         Func<float> timestampSource;
         float deltaTime;
-        #region Properties
+        
+        // MARK: Properties
         public float GlobalTime => timestampSource() - zeroMarker;
-        #endregion
-        #region Constructors
+
+        // MARK: Initializers
         public AdvancedTicker(Func<float> timestampSource)
         {
             this.timestampSource = timestampSource ?? throw new System.ArgumentNullException();
             lastMarker = zeroMarker = timestampSource();
-            DeltaTime = 0;
+            deltaTime = 0;
         }
-        #endregion
-        #region ITicker Implementation
-        public float DeltaTime {get; private set;}
+    }
+
+    #region ITicker Implementation
+    public partial struct AdvancedTicker: ITicker
+    {
         public float DeltaTime => deltaTime;
 
         public void Tick()
@@ -41,9 +44,13 @@ namespace MartonioJunior.Flow
         {
             zeroMarker = lastMarker = timestampSource();
         }
-        #endregion
-        #region Static Methods
-        public static AdvancedTicker New(bool isRealTime) => isRealTime ? new AdvancedTicker(Ticker.Unscaled) : new AdvancedTicker(Ticker.Scaled);
-        #endregion
     }
+    #endregion
+
+    #region Factory
+    public partial struct AdvancedTicker
+    {
+        public static AdvancedTicker New(bool isRealTime) => isRealTime ? new AdvancedTicker(Ticker.Unscaled) : new AdvancedTicker(Ticker.Scaled);
+    }
+    #endregion
 }

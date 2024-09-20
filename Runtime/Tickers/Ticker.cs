@@ -3,22 +3,36 @@ using UnityEngine;
 
 namespace MartonioJunior.Flow
 {
-    public struct Ticker: ITicker
+    public partial struct Ticker
     {
-        #region Variables
+        // MARK: Variables
         float lastMarker;
         Func<float> timestampSource;
         float deltaTime;
-        #region Constructors
+        
+        // MARK: Initializers
         public Ticker(Func<float> timestampSource)
         {
-            this.timestampSource = timestampSource ?? throw new System.ArgumentNullException();
+            this.timestampSource = timestampSource ?? throw new ArgumentNullException();
             lastMarker = timestampSource();
-            DeltaTime = 0;
+            deltaTime = 0;
         }
-        #endregion
-        #region ITicker Implementation
-        public float DeltaTime {get; private set;}
+
+        // MARK: Methods
+        public static float Scaled()
+        {
+            return Time.time;
+        }
+
+        public static float Unscaled()
+        {
+            return Time.unscaledTime;
+        }
+    }
+
+    #region ITicker Implementation
+    public partial struct Ticker: ITicker
+    {
         public float DeltaTime => deltaTime;
 
         public void Reset()
@@ -37,26 +51,20 @@ namespace MartonioJunior.Flow
         {
             lastMarker = timestampSource();
         }
-        #endregion
-        #region Static Methods
+    }
+    #endregion
+
+    #region Factory
+    public partial struct Ticker
+    {
         public static Ticker New(bool isRealTime)
         {
             if (isRealTime) {
-                return new Ticker(Ticker.Unscaled);
+                return new Ticker(Unscaled);
             } else {
-                return new Ticker(Ticker.Scaled);
+                return new Ticker(Scaled);
             }
         }
-
-        public static float Scaled()
-        {
-            return Time.time;
-        }
-
-        public static float Unscaled()
-        {
-            return Time.unscaledTime;
-        }
-        #endregion
     }
+    #endregion
 }

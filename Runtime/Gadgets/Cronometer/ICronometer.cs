@@ -1,13 +1,10 @@
-using UnityEngine;
-
 namespace MartonioJunior.Flow
 {
     public interface ICronometer: ITimeControllable
     {
-        #region Variables
+        // MARK: Variables
         float Elapsed {get;}
         bool Paused {get;}
         bool Zeroed {get;}
-        #endregion
     }
 }
