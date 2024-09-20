@@ -5,7 +5,8 @@
         "MartonioJunior.Flow",
         "MartonioJunior.TestSuite",
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "MartonioJunior.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
