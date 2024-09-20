@@ -9,7 +9,7 @@ namespace MartonioJunior.Flow
         float zeroMarker;
         float lastMarker;
         Func<float> timestampSource;
-        #endregion
+        float deltaTime;
         #region Properties
         public float GlobalTime => timestampSource() - zeroMarker;
         #endregion
@@ -23,11 +23,12 @@ namespace MartonioJunior.Flow
         #endregion
         #region ITicker Implementation
         public float DeltaTime {get; private set;}
+        public float DeltaTime => deltaTime;
 
         public void Tick()
         {
             var currentMarker = timestampSource();
-            DeltaTime = currentMarker - lastMarker;
+            deltaTime = currentMarker - lastMarker;
             lastMarker = currentMarker;
         }
 
