@@ -53,4 +53,11 @@ namespace MartonioJunior.Flow
         public void Tick() => cronometer.Tick();
     }
     #endregion
+
+    #region Event Bindings
+    public partial class CronometerComponent
+    {
+        public void Restart() => cronometer.Restart();
+    }
+    #endregion
 }
