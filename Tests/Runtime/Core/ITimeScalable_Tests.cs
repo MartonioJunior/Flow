@@ -1,17 +1,43 @@
 using System.Collections;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 using MartonioJunior.Flow;
 using static MartonioJunior.Test.Suite;
-using NSubstitute;
 using MartonioJunior.Test;
 
 namespace Tests.MartonioJunior.Flow
 {
-    public class ITimeScalable_Tests: SubstituteModel<ITimeScalable>
+    #region Mock
+    public class TimeScalableMock: ITimeScalable
     {
-        #region Method Tests
+        public float? TimeScale { get; private set; }
+
+        public void SetTimeScale(float timeScale)
+        {
+            TimeScale = timeScale;
+        }
+
+        public void Tick() {}
+    }
+    #endregion
+
+    #region Model Implementation
+    public partial class ITimeScalable_Tests: Model<TimeScalableMock>
+    {
+        public override void CreateTestContext()
+        {
+            modelReference = new TimeScalableMock();
+        }
+
+        public override void DestroyTestContext()
+        {
+            modelReference = null;
+        }
+    }
+    #endregion
+
+    #region Method Tests
+    public partial class ITimeScalable_Tests
+    {
         public static IEnumerable FastForward_UseCases()
         {
             var positiveValue = Range(1,1000,15);
@@ -25,7 +51,7 @@ namespace Tests.MartonioJunior.Flow
         {
             modelReference.FastForward(suggestedScale);
 
-            modelReference.Received(1).SetTimeScale(expectedResult);
+            Assert.AreEqual(expectedResult, modelReference.TimeScale);
         }
 
         public static IEnumerable Rewind_UseCases()
@@ -41,8 +67,8 @@ namespace Tests.MartonioJunior.Flow
         {
             modelReference.Rewind(suggestedScale);
 
-            modelReference.Received(1).SetTimeScale(expectedResult);
+            Assert.AreEqual(expectedResult, modelReference.TimeScale);
         }
-        #endregion
     }
+    #endregion
 }

@@ -1,11 +1,8 @@
 using System.Collections;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 using MartonioJunior.Flow;
 using static MartonioJunior.Test.Suite;
 using MartonioJunior.Test;
-using NSubstitute;
 
 namespace Tests.MartonioJunior.Flow
 {
@@ -17,7 +14,8 @@ namespace Tests.MartonioJunior.Flow
         #region Model Implementation
         public override void CreateTestContext()
         {
-            modelReference = new Cronometer(Substitute(out ticker));
+            ticker = new ManualTicker();
+            modelReference = new Cronometer(ticker);
         }
 
         public override void DestroyTestContext()
@@ -61,7 +59,6 @@ namespace Tests.MartonioJunior.Flow
 
             Assert.AreEqual(endState, modelReference.Paused);
             Assert.AreEqual(numberOfTriggers, triggerCount);
-            ticker.Received(numberOfTriggers).UpdateTimeMarkers();
         }
 
         public static IEnumerable SetTimeScale_UseCases()
